@@ -1,0 +1,38 @@
+{
+  "pyloop": {
+    "label": "Python loops",
+    "mpix": 0.01143251475321345,
+    "intensity": 0.9,
+    "order": 0
+  },
+  "software": {
+    "label": "Software (NumPy)",
+    "mpix": 1.3057059524654338,
+    "intensity": 0.9,
+    "order": 1
+  },
+  "rtl": {
+    "label": "RTL core (AXI-Lite, MMIO-streamed)",
+    "mpix": 0.017162880540637117,
+    "intensity": 4.5,
+    "order": 2
+  },
+  "hls_naive": {
+    "label": "HLS naive (DMA, II=9)",
+    "mpix": 1.44287167529772,
+    "intensity": 0.9,
+    "order": 3
+  },
+  "hls_opt": {
+    "label": "HLS line-buffer (DMA, II=1, mem-bound)",
+    "mpix": 10.14996812928737,
+    "intensity": 4.5,
+    "order": 4
+  },
+  "hls_stream": {
+    "label": "HLS streaming (DMA, II=1, dataflow+burst)",
+    "mpix": 39.89260076905887,
+    "intensity": 4.5,
+    "order": 5
+  }
+}

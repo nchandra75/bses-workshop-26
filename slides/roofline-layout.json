@@ -1,0 +1,14 @@
+{
+  "_comment": "Hand-tweakable layout for the <Roofline> component. Dot positions (x=arithmetic intensity, y=throughput) come from the board JSON; THIS file only controls how each label is drawn and where. Keyed by rung name. dx/dy are pixel offsets of the label from its dot; anchor is start|middle|end. Edit freely - it does not depend on board measurements.",
+  "title": "Roofline - PYNQ-Z2 @ 62.5 MHz",
+  "axes": { "xmin": 0.4, "xmax": 22, "ymin": 0.008, "ymax": 200 },
+  "regions": { "memory": "memory-bound", "compute": "compute-bound", "ridge": "ridge" },
+  "points": {
+    "pyloop":     { "text": "Python loops",    "color": "#1f77b4", "dx": 12,  "dy": 5,  "anchor": "start" },
+    "software":   { "text": "NumPy",           "color": "#ff7f0e", "dx": 12,  "dy": 13, "anchor": "start" },
+    "rtl":        { "text": "RTL core",         "color": "#2ca02c", "dx": 12,  "dy": 5,  "anchor": "start" },
+    "hls_naive":  { "text": "HLS naive",        "color": "#d62728", "dx": -12, "dy": -6, "anchor": "end" },
+    "hls_opt":    { "text": "HLS line-buffer",  "color": "#9467bd", "dx": 12,  "dy": -8, "anchor": "start" },
+    "hls_stream": { "text": "HLS streaming",    "color": "#8c564b", "dx": 12,  "dy": -8, "anchor": "start" }
+  }
+}

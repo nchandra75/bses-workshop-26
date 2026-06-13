@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" font-family="Inter, system-ui, sans-serif">
+  <rect x="2" y="2" width="756" height="316" rx="14" fill="#fafafa" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="380" y="32" text-anchor="middle" font-size="17" font-weight="700" fill="#991b1b">Un-pipelined: one giant combinational path</text>
+
+  <!-- datapath: reg -> big combinational blob -> reg -->
+  <!-- input register -->
+  <rect x="36" y="66" width="40" height="64" rx="6" fill="#fef9c3" stroke="#eab308" stroke-width="2"/>
+  <text x="56" y="94" text-anchor="middle" font-size="12" font-weight="700" fill="#854d0e">reg</text>
+  <text x="56" y="112" text-anchor="middle" font-size="10" fill="#854d0e">clk</text>
+
+  <!-- arrow in -->
+  <line x1="76" y1="98" x2="100" y2="98" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+  <!-- combinational mega-block (drawn to the same x-scale as the time axis below) -->
+  <rect x="100" y="66" width="540" height="64" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <line x1="280" y1="66" x2="280" y2="130" stroke="#93c5fd" stroke-width="1"/>
+  <line x1="470" y1="66" x2="470" y2="130" stroke="#93c5fd" stroke-width="1"/>
+  <text x="190" y="94" text-anchor="middle" font-size="11" font-weight="600" fill="#1e3a8a">line-buffer</text>
+  <text x="190" y="110" text-anchor="middle" font-size="11" font-weight="600" fill="#1e3a8a">read</text>
+  <text x="375" y="94" text-anchor="middle" font-size="11" font-weight="600" fill="#1e3a8a">9 multiplies</text>
+  <text x="375" y="110" text-anchor="middle" font-size="11" font-weight="600" fill="#1e3a8a">+ adder tree</text>
+  <text x="555" y="94" text-anchor="middle" font-size="11" font-weight="600" fill="#1e3a8a">shift, abs</text>
+  <text x="555" y="110" text-anchor="middle" font-size="11" font-weight="600" fill="#1e3a8a">clamp</text>
+
+  <!-- arrow out -->
+  <line x1="640" y1="98" x2="664" y2="98" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+  <!-- output register -->
+  <rect x="664" y="66" width="40" height="64" rx="6" fill="#fef9c3" stroke="#eab308" stroke-width="2"/>
+  <text x="684" y="94" text-anchor="middle" font-size="12" font-weight="700" fill="#854d0e">reg</text>
+  <text x="684" y="112" text-anchor="middle" font-size="10" fill="#854d0e">clk</text>
+
+  <!-- time axis, same x-scale: x=100 is 0 ns, x=640 is 26 ns -->
+  <line x1="100" y1="186" x2="640" y2="186" stroke="#64748b" stroke-width="2"/>
+  <text x="100" y="206" text-anchor="middle" font-size="10" fill="#475569">0 ns</text>
+  <text x="640" y="206" text-anchor="middle" font-size="11" font-weight="700" fill="#991b1b">26 ns</text>
+
+  <!-- budget overrun region (10 ns .. 26 ns) -->
+  <rect x="300" y="176" width="340" height="20" fill="#fecaca" fill-opacity="0.7"/>
+  <!-- 10 ns clock-edge marker (x = 100 + 10/26*540 = 308) -->
+  <line x1="308" y1="166" x2="308" y2="200" stroke="#ef4444" stroke-width="2" stroke-dasharray="5 3"/>
+  <text x="308" y="160" text-anchor="middle" font-size="11" font-weight="700" fill="#ef4444">10 ns budget (100 MHz)</text>
+  <text x="474" y="190" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b">16 ns too slow</text>
+
+  <!-- verdict banner -->
+  <rect x="120" y="240" width="520" height="52" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="380" y="263" text-anchor="middle" font-size="13" font-weight="700" fill="#991b1b">38 logic levels in one hop &#8212; data ready at 26 ns, due at 10 ns</text>
+  <text x="380" y="282" text-anchor="middle" font-size="13" font-weight="700" fill="#991b1b">WNS -16 ns &#183; 2039 endpoints fail &#183; will not run at 100 MHz</text>
+
+  <defs>
+    <marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#475569"/>
+    </marker>
+  </defs>
+</svg>

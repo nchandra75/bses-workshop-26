@@ -1,0 +1,17 @@
+# Python dependencies for the laptop / authoring side of the workshop.
+# Install into a uv venv:
+#   uv venv --python 3.13
+#   uv pip install -r requirements.txt
+#
+# NOTE: pynq is intentionally NOT listed here. It only works on the PYNQ board
+# (it mmaps /dev/mem). The board already ships pynq in its system image. On the
+# laptop, the FPGA backend reports "hardware not available" - see python/README.md.
+# Everything here is laptop-friendly and unpinned (we dropped Gradio, so there is
+# no longer a numpy<2 constraint).
+
+numpy
+pillow
+matplotlib
+ipywidgets
+jupyterlab
+pytest

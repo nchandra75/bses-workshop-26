@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" font-family="Inter, system-ui, sans-serif">
+  <!--
+    MMIO diagram for slides/pages/03-rtl-fpga.md ("getting data in and out").
+
+    HOW TO HAND-EDIT
+    Every block is one <g transform="translate(X,Y)"> group; its contents are
+    drawn relative to that group's own (0,0). To move a block, change ONLY the
+    two numbers in its translate(...) - nothing inside needs to change.
+
+    The block origins are collected as variables-in-comments below so you can see
+    them at a glance:
+        CPU      translate(90 , 80)    240 x 120
+        DRAM     translate(670, 80)    240 x 120
+        BUS      rect at  (70 ,250)    860 x  48   (not a group - one rect)
+        ACCEL    translate(360,350)    300 x 170
+        ADDRMAP  translate(70 ,350)    270 x 180
+        STEPS    translate(690,355)    250 x 175
+
+    The straight CONNECTORS and the orange TRANSACTION arrow use absolute
+    coordinates (SVG has no real constraint solver). They are gathered in their
+    own section at the bottom and each line says which block edge it touches, so
+    if you move a block, nudge the matching endpoint there.
+  -->
+
+  <rect x="2" y="2" width="996" height="556" rx="16" fill="#fafafa" stroke="#cbd5e1" stroke-width="2"/>
+
+  <text x="500" y="36" text-anchor="middle" font-size="23" font-weight="700" fill="#0f172a">MMIO: the CPU drives hardware through addresses</text>
+  <text x="500" y="58" text-anchor="middle" font-size="13" fill="#475569">A peripheral's registers live in the same address space as memory - reached by ordinary load / store.</text>
+
+  <!-- ============================ BUS ============================ -->
+  <!-- drawn first so the blocks/connectors sit on top of its label -->
+  <rect x="70" y="250" width="860" height="48" rx="8" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+  <text x="500" y="279" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">AXI4-Lite interconnect &#8212; routes each transaction by its address</text>
+
+  <!-- ============================ CPU ============================ -->
+  <g transform="translate(90,80)">
+    <rect x="0" y="0" width="240" height="120" rx="12" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="120" y="34" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">CPU  (PS)</text>
+    <text x="120" y="60" text-anchor="middle" font-size="12" fill="#1e3a8a">ARM core - runs the driver</text>
+    <text x="120" y="80" text-anchor="middle" font-size="12" fill="#1e3a8a">issues plain loads &amp; stores</text>
+    <rect x="36" y="90" width="168" height="22" rx="5" fill="#eff6ff" stroke="#93c5fd" stroke-width="1"/>
+    <text x="120" y="105" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#1e40af">str pix, [0x44A0_0014]</text>
+  </g>
+
+  <!-- ============================ DRAM =========================== -->
+  <g transform="translate(670,80)">
+    <rect x="0" y="0" width="240" height="120" rx="12" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+    <text x="120" y="34" text-anchor="middle" font-size="17" font-weight="700" fill="#334155">DRAM  (memory)</text>
+    <text x="120" y="60" text-anchor="middle" font-size="12" fill="#334155">image frames live here</text>
+    <text x="120" y="84" text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#334155">0x0000_0000 &#8230;</text>
+  </g>
+
+  <!-- ======================== ACCELERATOR ======================= -->
+  <g transform="translate(360,350)">
+    <rect x="0" y="0" width="300" height="170" rx="12" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+    <text x="150" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#14532d">conv3x3 core  (conv0)</text>
+
+    <!-- the datapath, left half -->
+    <rect x="16" y="50" width="124" height="100" rx="8" fill="#bbf7d0" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="78" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#14532d">9 MACs +</text>
+    <text x="78" y="111" text-anchor="middle" font-size="13" font-weight="700" fill="#14532d">adder tree</text>
+    <text x="78" y="133" text-anchor="middle" font-size="11" fill="#166534">parallel datapath</text>
+
+    <!-- register file, right half: byte offset from base. PIX_IN highlighted. -->
+    <g transform="translate(160,50)" font-family="ui-monospace, monospace">
+      <rect x="0" y="0"  width="124" height="28" rx="6" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+      <text x="62" y="19" text-anchor="middle" font-size="11" fill="#854d0e">+0x00  CTRL</text>
+
+      <rect x="0" y="38" width="124" height="28" rx="6" fill="#fde68a" stroke="#f59e0b" stroke-width="2.5"/>
+      <text x="62" y="57" text-anchor="middle" font-size="11" font-weight="700" fill="#854d0e">+0x14  PIX_IN</text>
+
+      <rect x="0" y="76" width="124" height="28" rx="6" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+      <text x="62" y="95" text-anchor="middle" font-size="11" fill="#854d0e">+0x18  OUT_DATA</text>
+    </g>
+  </g>
+
+  <!-- ========================= ADDRESS MAP ====================== -->
+  <g transform="translate(70,350)">
+    <rect x="0" y="0" width="270" height="180" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="135" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">Memory map (one address space)</text>
+
+    <g font-family="ui-monospace, monospace" font-size="12">
+      <!-- DRAM range -->
+      <rect x="18" y="44" width="150" height="46" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+      <text x="93" y="62" text-anchor="middle" fill="#334155">0x0000_0000</text>
+      <text x="93" y="80" text-anchor="middle" fill="#334155">0x3FFF_FFFF</text>
+      <text x="248" y="71" text-anchor="end" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#334155">DRAM</text>
+
+      <!-- peripheral range -->
+      <rect x="18" y="100" width="150" height="46" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+      <text x="93" y="118" text-anchor="middle" fill="#14532d">0x44A0_0000</text>
+      <text x="93" y="136" text-anchor="middle" fill="#14532d">0x44A0_FFFF</text>
+      <text x="248" y="127" text-anchor="end" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#14532d">conv0 regs</text>
+    </g>
+
+    <text x="135" y="166" text-anchor="middle" font-size="11" font-family="Inter, sans-serif" fill="#475569">the address alone picks the target</text>
+  </g>
+
+  <!-- ===================== "HOW MMIO WORKS" ===================== -->
+  <g transform="translate(690,355)">
+    <rect x="0" y="0" width="250" height="175" rx="12" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/>
+    <text x="125" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#9a3412">How one access works</text>
+
+    <g font-size="12" fill="#7c2d12">
+      <circle cx="22" cy="48" r="9" fill="#f97316"/><text x="22" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">1</text>
+      <text x="40" y="52" font-weight="600">CPU stores to 0x44A0_0014</text>
+
+      <circle cx="22" cy="78" r="9" fill="#f97316"/><text x="22" y="82" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">2</text>
+      <text x="40" y="82" font-weight="600">interconnect decodes addr,</text>
+      <text x="40" y="98" font-weight="600">selects conv0</text>
+
+      <circle cx="22" cy="122" r="9" fill="#f97316"/><text x="22" y="126" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">3</text>
+      <text x="40" y="126" font-weight="600">data lands in PIX_IN</text>
+      <text x="40" y="142" font-weight="600">(a register, not DRAM)</text>
+    </g>
+    <text x="125" y="166" text-anchor="middle" font-size="10.5" fill="#9a3412">read 0x44A0_0018 -&gt; OUT_DATA the same way</text>
+  </g>
+
+  <!-- =========================================================== -->
+  <!--  CONNECTORS  (absolute coords - touch a block edge each)     -->
+  <!--  Each "drop" ties a block to the bus; this is the physical   -->
+  <!--  attachment to the shared AXI bus.                           -->
+  <!-- =========================================================== -->
+  <g stroke="#475569" stroke-width="2.5">
+    <!-- CPU bottom-centre (210,200) down to bus top (210,250) -->
+    <line x1="210" y1="200" x2="210" y2="250"/>
+    <circle cx="210" cy="250" r="4" fill="#475569" stroke="none"/>
+    <!-- DRAM bottom-centre (790,200) down to bus top (790,250) -->
+    <line x1="790" y1="200" x2="790" y2="250"/>
+    <circle cx="790" cy="250" r="4" fill="#475569" stroke="none"/>
+    <!-- ACCEL top-centre (510,350) up to bus bottom (510,298) -->
+    <line x1="510" y1="298" x2="510" y2="350"/>
+    <circle cx="510" cy="298" r="4" fill="#475569" stroke="none"/>
+  </g>
+
+  <!-- =========================================================== -->
+  <!--  TRANSACTION  (the orange MMIO write path)                   -->
+  <!--  CPU -> down the bus -> along the bus -> into PIX_IN.         -->
+  <!--  Numbered circles (1)(2)(3) match the "How MMIO works" panel.-->
+  <!--  Endpoints: starts near CPU drop (x=240), rides bus mid      -->
+  <!--  (y=274), drops into PIX_IN top (582,436).                   -->
+  <!-- =========================================================== -->
+  <polyline points="240,200 240,290 612,290 612,436" fill="none"
+            stroke="#f97316" stroke-width="3" stroke-dasharray="7 4" marker-end="url(#tah)"/>
+  <circle cx="260" cy="215" r="11" fill="#f97316"/><text x="260" y="219" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">1</text>
+  <circle cx="411" cy="314" r="11" fill="#f97316"/><text x="411" y="318" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">2</text>
+  <circle cx="632" cy="382" r="11" fill="#f97316"/><text x="632" y="386" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">3</text>
+
+  <!-- bottom caption: the cost this whole rung pays -->
+  <text x="405" y="548" text-anchor="middle" font-size="12" fill="#475569">Every pixel crosses the bus twice - CPU writes PIX_IN, then reads OUT_DATA - one round-trip per pixel.</text>
+
+  <defs>
+    <marker id="tah" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#f97316"/>
+    </marker>
+  </defs>
+</svg>

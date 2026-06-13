@@ -1,0 +1,47 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# The notebook series' shared roofline tally is a generated, per-run artifact.
+python/notebooks/scoreboard.json
+
+# Transient outputs of collect_board_data.py / a board run. The canonical copies
+# we keep as a baseline live in python/reference_data/ under stable names.
+/board_data.json
+/scoreboard.json
+
+# Vivado / Vitis generated junk
+*.jou
+*.log
+*.str
+vivado*.backup.jou
+vivado*.backup.log
+.Xil/
+rtl/build/
+rtl/*.cache/
+rtl/*.hw/
+rtl/*.runs/
+rtl/*.sim/
+rtl/*.gen/
+rtl/*.xpr
+rtl/timing_*.rpt
+xsim.dir/
+*.wdb
+*.pb
+webtalk*.tcl
+hls/build/
+hls/*.prj/
+hls/proj_*/
+
+# Bitstreams and hardware handoff files are large; keep them out of git.
+# Distribute pre-built bitfiles to the boards separately (see docs/instructor-setup.md).
+*.bit
+*.hwh
+*.xsa
+*.ltx
+
+# OS
+.DS_Store

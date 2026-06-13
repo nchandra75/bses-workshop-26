@@ -1,0 +1,7 @@
+# Notebooks commit code-only: a git 'clean' filter strips outputs/exec-counts so
+# diffs and history stay readable and rendered outputs never land in the repo. The
+# filter is repo-local git config (not committed), so set it up once per clone:
+#   git config filter.nbstrip.clean "python3 tools/strip-nb-outputs.py"
+#   git config filter.nbstrip.smudge cat
+# (smudge=cat leaves your working-copy outputs alone.)
+*.ipynb filter=nbstrip

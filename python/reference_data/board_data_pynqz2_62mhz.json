@@ -1,0 +1,75 @@
+{
+  "kernel": "edges",
+  "fclk0_mhz": 62.5,
+  "peak_mpix": 62.5,
+  "effective_dram_bw_bytes": 79785201.53811775,
+  "effective_dram_bw_source": "hls_stream",
+  "rungs": [
+    {
+      "name": "pyloop",
+      "label": "Python loops",
+      "side": 64,
+      "mpix": 0.01143251475321345,
+      "best_ms": 358.2763799931854,
+      "first_ms": 359.17107306886464,
+      "bytes_per_pixel": null,
+      "achieved_bw_bytes": null,
+      "bit_exact": true
+    },
+    {
+      "name": "software",
+      "label": "Software (NumPy)",
+      "side": 512,
+      "mpix": 1.3057059524654338,
+      "best_ms": 200.76802093535662,
+      "first_ms": 201.89188793301582,
+      "bytes_per_pixel": null,
+      "achieved_bw_bytes": null,
+      "bit_exact": true
+    },
+    {
+      "name": "rtl",
+      "label": "RTL core (AXI-Lite, MMIO-streamed)",
+      "side": 128,
+      "mpix": 0.017162880540637117,
+      "best_ms": 954.6183090424165,
+      "first_ms": 966.589741059579,
+      "bytes_per_pixel": 2,
+      "achieved_bw_bytes": 34325.761081274235,
+      "bit_exact": true
+    },
+    {
+      "name": "hls_naive",
+      "label": "HLS naive (DMA, II=9)",
+      "side": 720,
+      "mpix": 1.44287167529772,
+      "best_ms": 359.28351001348346,
+      "first_ms": 376.67725898791105,
+      "bytes_per_pixel": 10,
+      "achieved_bw_bytes": 14428716.7529772,
+      "bit_exact": true
+    },
+    {
+      "name": "hls_opt",
+      "label": "HLS line-buffer (DMA, II=1, mem-bound)",
+      "side": 720,
+      "mpix": 10.14996812928737,
+      "best_ms": 51.074051996693015,
+      "first_ms": 58.0874519655481,
+      "bytes_per_pixel": 2,
+      "achieved_bw_bytes": 20299936.25857474,
+      "bit_exact": true
+    },
+    {
+      "name": "hls_stream",
+      "label": "HLS streaming (DMA, II=1, dataflow+burst)",
+      "side": 720,
+      "mpix": 39.89260076905887,
+      "best_ms": 12.994891032576561,
+      "first_ms": 20.320874056778848,
+      "bytes_per_pixel": 2,
+      "achieved_bw_bytes": 79785201.53811775,
+      "bit_exact": true
+    }
+  ]
+}
